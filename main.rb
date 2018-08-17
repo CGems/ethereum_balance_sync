@@ -56,6 +56,7 @@ end
 
 client = Mysql2::Client.new(:host => "localhost", :port => "3306", :username => "root", :password => '123456', :database => 'peatio_development')
 tokens.each_pair do |token_symbol, token|
+  client.query "update payment_addresses set balance=0.0 where currency=#{token[:id]}"
   addresses = get_addresses_by_token client, token[:id]
   update_token_balances(client, addresses, token[:id], token[:contract], token[:decimals])
 end
